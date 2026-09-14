@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Account | AuraMetrics</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --bg-main: #0a0d14;
+        --bg-surface: rgba(18, 24, 38, 0.75);
+        --bg-surface-hover: rgba(28, 36, 56, 0.85);
+        --border-glass: rgba(255, 255, 255, 0.08);
+        --border-accent: rgba(99, 102, 241, 0.35);
+        --primary: #6366f1;
+        --primary-glow: rgba(99, 102, 241, 0.25);
+        --accent-teal: #14b8a6;
+        --accent-rose: #f43f5e;
+        --accent-amber: #f59e0b;
+        --text-primary: #f8fafc;
+        --text-secondary: #94a3b8;
+        --text-muted: #64748b;
+        --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+        background-color: var(--bg-main);
+        color: var(--text-primary);
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 32px 16px;
+        background-image: 
+          radial-gradient(circle at 20% 20%, rgba(99, 102, 241, 0.14) 0%, transparent 45%),
+          radial-gradient(circle at 80% 80%, rgba(20, 184, 166, 0.1) 0%, transparent 50%);
+        background-attachment: fixed;
+      }
+
+      .register-container {
+        width: 100%;
+        max-width: 480px;
+        background: var(--bg-surface);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-glass);
+        border-radius: 20px;
+        padding: 36px 32px;
+        box-shadow: 0 24px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(99, 102, 241, 0.08);
+      }
+
+      .brand-header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        margin-bottom: 28px;
+      }
+
+      .brand-logo {
+        width: 44px;
+        height: 44px;
+        background: linear-gradient(135deg, #6366f1 0%, #4338ca 100%);
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        box-shadow: 0 0 20px var(--primary-glow);
+        margin-bottom: 14px;
+      }
+
+      .brand-logo svg {
+        width: 24px;
+        height: 24px;
+        fill: #ffffff;
+      }
+
+      .brand-header h1 {
+        font-size: 1.55rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        margin-bottom: 6px;
+      }
+
+      .brand-header p {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+
+      .field-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+
+      @media (max-width: 420px) {
+        .field-row {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+      }
+
+      label {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        letter-spacing: 0.01em;
+      }
+
+      .input-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+
+      .input-field {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid var(--border-glass);
+        border-radius: 10px;
+        padding: 11px 14px;
+        color: var(--text-primary);
+        font-size: 0.92rem;
+        outline: none;
+        transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
+      }
+
+      .input-field::placeholder {
+        color: var(--text-muted);
+      }
+
+      .input-field:focus {
+        background: rgba(255, 255, 255, 0.06);
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px var(--primary-glow);
+      }
+
+      .input-wrapper .input-field.has-toggle {
+        padding-right: 48px;
+      }
+
+      .toggle-btn {
+        position: absolute;
+        right: 8px;
+        background: transparent;
+        border: none;
+        color: var(--text-muted);
+        font-size: 0.8rem;
+        font-weight: 600;
+        padding: 6px 8px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: color var(--transition-fast), background-color var(--transition-fast);
+      }
+
+      .toggle-btn:hover {
+        color: var(--text-primary);
+        background: rgba(255, 255, 255, 0.06);
+      }
+
+      /* Password Strength Indicator */
+      .strength-container {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-top: 2px;
+      }
+
+      .strength-bar {
+        height: 4px;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 9999px;
+        overflow: hidden;
+      }
+
+      .strength-fill {
+        height: 100%;
+        width: 0%;
+        border-radius: 9999px;
+        transition: width 0.3s ease, background-color 0.3s ease;
+      }
+
+      .strength-text {
+        font-size: 0.74rem;
+        color: var(--text-muted);
+      }
+
+      /* Terms checkbox */
+      .terms-wrap {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin-top: 4px;
+      }
+
+      .terms-wrap input[type="checkbox"] {
+        accent-color: var(--primary);
+        margin-top: 3px;
+        width: 15px;
+        height: 15px;
+        cursor: pointer;
+      }
+
+      .terms-wrap label {
+        font-size: 0.8rem;
+        font-weight: 400;
+        color: var(--text-secondary);
+        line-height: 1.4;
+        cursor: pointer;
+      }
+
+      .terms-wrap a {
+        color: #818cf8;
+        text-decoration: none;
+      }
+
+      .terms-wrap a:hover {
+        text-decoration: underline;
+      }
+
+      /* Submit Button */
+      .btn-submit {
+        background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+        color: #ffffff;
+        border: none;
+        border-radius: 10px;
+        padding: 13px 16px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 4px 16px var(--primary-glow);
+        transition: transform var(--transition-fast), box-shadow var(--transition-fast), opacity var(--transition-fast);
+        margin-top: 8px;
+      }
+
+      .btn-submit:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 22px rgba(99, 102, 241, 0.35);
+      }
+
+      .btn-submit:active {
+        transform: translateY(1px);
+      }
+
+      .btn-submit:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+
+      .form-message {
+        min-height: 18px;
+        text-align: center;
+        font-size: 0.84rem;
+        font-weight: 500;
+      }
+
+      .form-message.error {
+        color: var(--accent-rose);
+      }
+
+      .form-message.success {
+        color: var(--accent-teal);
+      }
+
+      .footer-links {
+        text-align: center;
+        margin-top: 24px;
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+      }
+
+      .footer-links a {
+        color: #818cf8;
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .footer-links a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="register-container">
+      <div class="brand-header">
+        <div class="brand-logo">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+          </svg>
+        </div>
+        <h1>Create your account</h1>
+        <p>Join AuraMetrics to access real-time enterprise telemetry.</p>
+      </div>
+
+      <form id="registerForm" novalidate>
+        <div class="field-row">
+          <div class="input-group">
+            <label for="fullName">Full Name</label>
+            <input
+              type="text"
+              id="fullName"
+              name="fullName"
+              class="input-field"
+              placeholder="e.g. Jeril Mark"
+              autocomplete="name"
+              required
+            />
+          </div>
+
+          <div class="input-group">
+            <label for="username">Username</label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              class="input-field"
+              placeholder="e.g. jerilmark"
+              autocomplete="username"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="email">Email Address</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            class="input-field"
+            placeholder="you@company.com"
+            autocomplete="email"
+            required
+          />
+        </div>
+
+        <div class="input-group">
+          <label for="password">Password</label>
+          <div class="input-wrapper">
+            <input
+              type="password"
+              id="password"
+              name="password"
+              class="input-field has-toggle"
+              placeholder="Min. 8 characters"
+              autocomplete="new-password"
+              required
+            />
+            <button type="button" class="toggle-btn" id="togglePassword">Show</button>
+          </div>
+
+          <!-- Strength Indicator Strip -->
+          <div class="strength-container" aria-live="polite">
+            <div class="strength-bar">
+              <div class="strength-fill" id="strengthBar"></div>
+            </div>
+            <span class="strength-text" id="strengthText">Password strength: Empty</span>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="confirmPassword">Confirm Password</label>
+          <div class="input-wrapper">
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              class="input-field"
+              placeholder="Re-enter password"
+              autocomplete="new-password"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="terms-wrap">
+          <input type="checkbox" id="agreeTerms" required />
+          <label for="agreeTerms">
+            I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+          </label>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submitBtn">Create Account</button>
+        <div id="formMessage" class="form-message" role="status" aria-live="polite"></div>
+      </form>
+
+      <div class="footer-links">
+        Already have an account? <a href="login.html">Sign In</a>
+      </div>
+    </main>
+
+    <script>
+      const form = document.getElementById('registerForm');
+      const fullName = document.getElementById('fullName');
+      const username = document.getElementById('username');
+      const email = document.getElementById('email');
+      const password = document.getElementById('password');
+      const confirmPassword = document.getElementById('confirmPassword');
+      const agreeTerms = document.getElementById('agreeTerms');
+      const togglePassword = document.getElementById('togglePassword');
+      const strengthBar = document.getElementById('strengthBar');
+      const strengthText = document.getElementById('strengthText');
+      const formMessage = document.getElementById('formMessage');
+      const submitBtn = document.getElementById('submitBtn');
+
+      // Toggle Password Visibility
+      togglePassword.addEventListener('click', () => {
+        const isPassword = password.type === 'password';
+        password.type = isPassword ? 'text' : 'password';
+        togglePassword.textContent = isPassword ? 'Hide' : 'Show';
+      });
+
+      // Password Strength Heuristic Checker
+      password.addEventListener('input', () => {
+        const val = password.value;
+        let score = 0;
+
+        if (val.length >= 8) score++;
+        if (/[A-Z]/.test(val)) score++;
+        if (/[0-9]/.test(val)) score++;
+        if (/[^A-Za-z0-9]/.test(val)) score++;
+
+        if (val.length === 0) {
+          strengthBar.style.width = '0%';
+          strengthText.textContent = 'Password strength: Empty';
+          strengthText.style.color = 'var(--text-muted)';
+          return;
+        }
+
+        switch (score) {
+          case 1:
+            strengthBar.style.width = '25%';
+            strengthBar.style.backgroundColor = 'var(--accent-rose)';
+            strengthText.textContent = 'Password strength: Weak';
+            strengthText.style.color = 'var(--accent-rose)';
+            break;
+          case 2:
+            strengthBar.style.width = '50%';
+            strengthBar.style.backgroundColor = 'var(--accent-amber)';
+            strengthText.textContent = 'Password strength: Fair';
+            strengthText.style.color = 'var(--accent-amber)';
+            break;
+          case 3:
+            strengthBar.style.width = '75%';
+            strengthBar.style.backgroundColor = '#818cf8';
+            strengthText.textContent = 'Password strength: Good';
+            strengthText.style.color = '#818cf8';
+            break;
+          case 4:
+            strengthBar.style.width = '100%';
+            strengthBar.style.backgroundColor = 'var(--accent-teal)';
+            strengthText.textContent = 'Password strength: Strong';
+            strengthText.style.color = 'var(--accent-teal)';
+            break;
+        }
+      });
+
+      // Validation & Submission Handling
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        formMessage.textContent = '';
+        formMessage.className = 'form-message';
+
+        // 1. Basic empty validation
+        if (
+          !fullName.value.trim() ||
+          !username.value.trim() ||
+          !email.value.trim() ||
+          !password.value ||
+          !confirmPassword.value
+        ) {
+          formMessage.textContent = 'Please fill in all required fields.';
+          formMessage.classList.add('error');
+          return;
+        }
+
+        // 2. Email format check
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email.value.trim())) {
+          formMessage.textContent = 'Please enter a valid email address.';
+          formMessage.classList.add('error');
+          return;
+        }
+
+        // 3. Password length check
+        if (password.value.length < 8) {
+          formMessage.textContent = 'Password must be at least 8 characters.';
+          formMessage.classList.add('error');
+          return;
+        }
+
+        // 4. Password equality check
+        if (password.value !== confirmPassword.value) {
+          formMessage.textContent = 'Passwords do not match.';
+          formMessage.classList.add('error');
+          return;
+        }
+
+        // 5. Terms checkbox
+        if (!agreeTerms.checked) {
+          formMessage.textContent = 'You must agree to the Terms and Privacy Policy.';
+          formMessage.classList.add('error');
+          return;
+        }
+
+        // Async simulation
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Creating account...';
+
+        try {
+          // Simulated API request delay (replace with real fetch call)
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+
+          formMessage.textContent = 'Account created successfully! Redirecting...';
+          formMessage.classList.add('success');
+
+          setTimeout(() => {
+            window.location.href = 'dashboard.html';
+          }, 1200);
+        } catch (err) {
+          formMessage.textContent = 'Failed to create account. Please try again.';
+          formMessage.classList.add('error');
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Create Account';
+        }
+      });
+    </script>
+  </body>
+</html>
